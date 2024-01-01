@@ -1,0 +1,55 @@
+﻿@using Cinego.Data.ViewModel;
+@model LoginViewModel;
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (TempData["Error"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-left",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 3000,
+            "extendedTimeOut": 1000
+        }
+        toastr.error('@TempData["Error"]')
+
+    </script>
+}
+
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+       <h4>Login</h4>
+         <div class="row">
+             <div class="col-md-8 offset-2">
+                 <form asp-action="Login">
+                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                     <div class="form-group">
+                         <label asp-for="EmailAddress" class="control-label"></label>
+                        <input asp-for="EmailAddress" class="form-control" />
+                        <span asp-validation-for="EmailAddress"></span>
+                     </div
+                     <div class="form-group">
+                         <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password"></span>
+                     </div>
+                     <hr/>
+                     <div class="form-group">
+                         <input class="btn btn-outline-success float-right" type="submit" value="Enter" />
+                         <a class="btn btn-outline-secondary" asp-controller="Movies" asp-action="Index">Return</a>
+                     </div>
+                 </form>
+             </div>
+         </div>
+    </div>
+</div>

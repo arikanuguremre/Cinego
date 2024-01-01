@@ -1,0 +1,53 @@
+﻿@model Director
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <h4> Are You Sure to Want to Delete  - @Model.FullName ?</h4>
+            <br />
+
+            <div class="row">
+                <div class="col-md-8 offset-2">
+
+
+                    <img class="rounded mx-auto d-block shadow-lg" src="@Model.PpURL" alt="image" width="200" height="300" />
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" class="form-control" readonly />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bio" class="control-label"></label>
+                        <input asp-for="Bio" class="form-control" readonly />
+                        <span asp-validation-for="Bio" class="text-danger"></span>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <form action="Delete" method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="submit" value="Confirm" class="btn btn-danger float-end" />
+
+                        </form>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Return Directors Page</a>
+
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        }
+
+       
+    </div>
+
+</div>

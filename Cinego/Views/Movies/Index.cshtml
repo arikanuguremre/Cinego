@@ -1,0 +1,103 @@
+﻿@using Cinego.Models;
+@model IEnumerable<Movie>
+
+@{
+    ViewData["Title"] = "Movies";
+}
+
+@if (TempData["Success"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-left",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 3000,
+            "extendedTimeOut": 1000
+        }
+        toastr.success('@TempData["Success"]')
+
+    </script>
+}
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="text-white">
+        <a asp-controller="Movies" asp-action="Create" class="btn btn-outline-info">Add New Movies +</a>
+    </div>
+}
+
+
+<div class="row">
+
+    @foreach(var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3 shadow-lg p-3 bg-body rounded ">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white" style="background-color:#7F00FF">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Name
+                                    
+                                    
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@item.ImageURL" width="100%" alt="@item.Name">
+                    </div>
+                    <div class="col-md-6" style="background-color:#EDEADE">
+                        <div class="card-body" >
+                            
+                            <p class="card-text text-black"><b>Cinema: </b>@item.Cinema.Name</p>
+                            <p class="card-text text-black"><b>Category: </b>@item.MoviType</p>
+                            <p class="card-text text-black"><b>Start Date: </b>@item.StartDate.ToString("dd MMM yy")</p>
+                            <p class="card-text text-black"><b>Due Date: </b>@item.FinishDate.ToString("dd MMM yy")</p>
+                            <p class="card-text ">
+                                
+                                @if (DateTime.Now >= item.StartDate && DateTime.Now <= item.FinishDate)
+                                {
+                                    <span class="badge bg-success text-white">On Theatres </span>
+                                }
+                                else if (DateTime.Now > item.FinishDate)
+                                {
+                                    <span class="badge bg-danger text-white">Leave Theatres</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary text-white">Upcoming Program</span>
+                                }
+                            </p>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer " style="background-color:#EDEADE">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Details Page
+                                </a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin") || User.Identity.IsAuthenticated && User.IsInRole("User"))
+                                {
+                                    <a class="btn btn-success text-white @((DateTime.Now > item.FinishDate) ? "disabled" : "")"
+                                       
+                                     >
+                                        <i class="bi bi-ticket"></i>  Buy Ticket ₺@item.Price.ToString()
+                                    </a>
+                                }
+                                
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

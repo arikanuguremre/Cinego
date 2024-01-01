@@ -1,0 +1,47 @@
+﻿@model Director
+
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+
+
+        <h4>@Model.FullName</h4>
+        <br />
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+
+
+                <img class="rounded mx-auto d-block shadow-lg" src="@Model.PpURL" alt="image" width="200" height="300" />
+                <br />
+                <div class="form-group">
+                    <label asp-for="FullName" class="control-label"></label>
+                    <input asp-for="FullName" class="form-control" readonly />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                    <br />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Bio" class="control-label"></label>
+                    <input asp-for="Bio" class="form-control" readonly />
+                    <span asp-validation-for="Bio" class="text-danger"></span>
+                    <br />
+                </div>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <div class="form-group">
+                        <a class="btn btn-outline-secondary" asp-action="Index">Return Directors Page</a>
+                        <a class="btn btn-outline-success float-end" asp-action="Edit" asp-route-id=@Model.Id>Go to Edit</a>
+
+                    </div>
+                }
+                
+
+
+            </div>
+        </div>
+    </div>
+
+</div>

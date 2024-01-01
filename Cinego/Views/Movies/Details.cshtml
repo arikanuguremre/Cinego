@@ -1,0 +1,124 @@
+﻿@using Cinego.Models;
+@model Movie
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+
+<div class="h-100 d-flex align-items-center justify-content-center">
+
+
+    <div class="col-md-8 offset-4  rounded ">
+        <div class="card mb-3" style="max-width: 600px;">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white" style="background-color:#7F00FF">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Name  
+                            </h5>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="@Model.ImageURL" width="100%" alt="@Model.Name">
+                    <div class="col-md-12">
+                        <div class="card-footer " style="background-color:#C5C5C5">
+                            <p class="card-text">
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin") || User.Identity.IsAuthenticated && User.IsInRole("User"))
+                                {
+                                    <a class="btn btn-success text-white @((DateTime.Now > Model.FinishDate) ? "disabled" : "")"
+                                       >
+                                        <i class="bi bi-ticket"></i>  Buy Ticket ₺@Model.Price.ToString()
+                                    </a>
+                               }
+                                
+                                <hr />
+                                <a class="btn btn-outline-primary float-right" asp-action="Index">
+                                    Return Main Page
+                                </a>
+                            </p>
+                            <p class="card-text  text-black">
+                                <b>Director: </b>
+                                <hr />
+                                <div class="row">
+                                   
+                                    
+                                        <div class="col text-center">
+
+                                        <a class="link-dark" asp-controller="Directors" asp-action="Details" asp-route-id="@Model.DirectorId">
+                                            <img class="img-thumbnail p-3" src="@Model.Director.PpURL" style="max-width:150px" />
+                                                <br />
+                                                @Model.Director.FullName
+
+                                            </a>
+                                        </div>
+                                    
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8" style="background-color:#6F7378">
+                    <div class="card-body">
+                        
+                        <div class="col-md-16">
+                            <p class="card-text ">
+                                <b>Description: </b>
+                                <p>@Model.Description</p>
+                                
+                                <b>Cinema: </b>
+                                <a class="link-warning" asp-controller="Cinemas" asp-action="Index">
+                                    @Model.Cinema.Name
+                                </a>
+                                <img class="m-1"src="@Model.Cinema.Brandlogo" alt="image" width="160" height="80" />
+                            <p/>
+                        </div>
+                        
+                        
+                        <p class="card-text text-black"><b>Category: </b>@Model.MoviType</p>
+                        <p class="card-text text-black"><b>Start Date: </b>@Model.StartDate.ToString("dd MMM yy")</p>
+                        <p class="card-text text-black"><b>Due Date: </b>@Model.FinishDate.ToString("dd MMM yy")</p>
+                        <p class="card-text ">
+
+                            @if (DateTime.Now >= Model.StartDate && DateTime.Now <= Model.FinishDate)
+                            {
+                                <span class="badge bg-success text-white">On Theatres </span>
+                            }
+                            else if (DateTime.Now > Model.FinishDate)
+                            {
+                                <span class="badge bg-danger text-white">Leave Theatres</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary text-white">Upcoming Program</span>
+                            }
+                        </p>
+                        <p class="card-text  text-black">
+                            <b>Actors: </b>
+                            <hr/>
+                            <div class="row gx-5">
+                                @foreach (var actor in Model.Actors_Movies)
+                                {
+                                    <div class="col text-center">
+                                        
+                                        <a class="link-warning" asp-controller="Actors" asp-action="Details" asp-route-id="@actor.ActorId">
+                                            <img class=" p-3" src="@actor.Actor.PpURL" style="max-width:150px" />
+                                            <br />
+                                            @actor.Actor.FullName
+
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </p>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
