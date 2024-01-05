@@ -29,7 +29,7 @@
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin") || User.Identity.IsAuthenticated && User.IsInRole("User"))
                                 {
                                     <a class="btn btn-success text-white @((DateTime.Now > Model.FinishDate) ? "disabled" : "")"
-                                       >
+                                       asp-controller="Orders" asp-action="AddToCart" asp-route-id="@Model.Id">
                                         <i class="bi bi-ticket"></i>  Buy Ticket ₺@Model.Price.ToString()
                                     </a>
                                }

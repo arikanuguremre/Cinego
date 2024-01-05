@@ -4,6 +4,7 @@ using Cinego.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinego.Migrations
 {
     [DbContext(typeof(CinegoDbContext))]
-    partial class CinegoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240105112659_Order_OrderItemAdded")]
+    partial class Order_OrderItemAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,31 +64,6 @@ namespace Cinego.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("Actors_Movies");
-                });
-
-            modelBuilder.Entity("Cinego.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CartId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("Cinego.Models.Cinema", b =>
@@ -452,17 +430,6 @@ namespace Cinego.Migrations
                         .IsRequired();
 
                     b.Navigation("Actor");
-
-                    b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("Cinego.Models.CartItem", b =>
-                {
-                    b.HasOne("Cinego.Models.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Movie");
                 });

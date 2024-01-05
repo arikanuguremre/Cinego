@@ -45,7 +45,7 @@ namespace Cinego.Controllers
                         
                     }
                 }
-                TempData["Error"] = "Wrong Emial or Password, please try again !";
+                TempData["Error"] = "Wrong Email or Password, please try again !";
                 return View(loginViewModel);
             }
             TempData["Error"] = "Wrong Email or Password, please try again !";

@@ -11,8 +11,11 @@ namespace Cinego.Data
 		public DbSet<Actor> Actors { get; set; }
 		public DbSet<Movie> Movies { get; set; }
 		public DbSet<Actor_Movie> Actors_Movies { get; set; }
-	
-		public CinegoDbContext(DbContextOptions<CinegoDbContext>options):base(options)
+        public DbSet <Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
+        public CinegoDbContext(DbContextOptions<CinegoDbContext>options):base(options)
         {
             
         }

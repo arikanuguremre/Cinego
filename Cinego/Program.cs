@@ -17,6 +17,11 @@ builder.Services.AddScoped<IActorsService, ActorsService>();
 builder.Services.AddScoped<IDirectorsService, DirectorService>();
 builder.Services.AddScoped<ICinemasService, CinemasService>();
 builder.Services.AddScoped<IMoviesService, MovieService>();
+builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+builder.Services.AddScoped(sc=>Cart.GetCart(sc));
+builder.Services.AddScoped<IOrdersService, OrderService>();
+
+
 
 //Authorization type services
 builder.Services.AddIdentity<User,IdentityRole>().AddEntityFrameworkStores<CinegoDbContext>();
@@ -44,7 +49,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

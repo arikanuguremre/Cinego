@@ -1,0 +1,116 @@
+﻿@using Cinego.Data.ViewModel;
+@model CartViewModel
+
+@{
+    ViewData["Title"] = "Your Cart History";
+}
+@if (TempData["Success"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-left",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 3000,
+            "extendedTimeOut": 1000
+        }
+        toastr.success('@TempData["Success"]')
+
+    </script>
+}
+@if (TempData["Error"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-left",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 3000,
+            "extendedTimeOut": 1000
+        }
+        toastr.error('@TempData["Success"]')
+
+    </script>
+}
+
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin") || User.Identity.IsAuthenticated && User.IsInRole("User"))
+{
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <div class="text-center">
+                <h2>Your cart history</h2>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-white">Amount</th>
+                        <th class="text-white">Movie Name</th>
+                        <th class="text-white">Price</th>
+                        <th class="text-white">Total</th>
+                   
+                   
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Cart.CartItems)
+                    {
+                        <tr>
+                            <td class="align-middle text-white">
+                                @item.Amount
+                            </td>
+                            <td class="align-middle text-white">
+                                @item.Movie.Name
+                            </td>
+                            <td class="align-middle text-white">
+                                ₺ @item.Movie.Price
+                            </td>
+                            <td class="align-middle text-white">
+                                ₺ @((item.Amount * item.Movie.Price))
+                            </td>
+                            <td class="align-middle">
+                                <a class="text-center" asp-controller="Orders" asp-action="RemoveItemFromCart" asp-route-id="@item.Movie.Id">
+                                    <i style="color: #ff0000" class="bi bi-file-minus-fill h3"></i>
+                                </a>
+                                <a class="text-center" asp-controller="Orders" asp-action="AddToCart" asp-route-id="@item.Movie.Id">
+                                    <i style="color:green" class="bi bi-file-plus-fill h3"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+
+                    <tr>
+                        <td colspan="2"></td>
+                        <td class="text-white"><b>Total:</b></td>
+                        <td class="text-white">
+                            ₺ @Model.CartTotal
+                        </td>
+                    </tr>
+                </tfoot>
+
+            </table>
+            <div class="text-center">
+                <div class="btn-group">
+                    <a class="btn btn-outline-success" asp-controller="Movies" asp-action="Index">
+                        Add more Movies to cart
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
